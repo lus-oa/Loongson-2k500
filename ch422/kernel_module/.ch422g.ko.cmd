@@ -1,0 +1,1 @@
+cmd_/root/loongarch/drv_src/ch422g/ch422g.ko := loongarch64-linux-gnu-ld -r  -m elf64loongarch  --build-id=sha1  -T scripts/module.lds -o /root/loongarch/drv_src/ch422g/ch422g.ko /root/loongarch/drv_src/ch422g/ch422g.o /root/loongarch/drv_src/ch422g/ch422g.mod.o;  make -f ./arch/loongarch/Makefile.postlink /root/loongarch/drv_src/ch422g/ch422g.ko
