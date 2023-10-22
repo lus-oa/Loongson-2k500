@@ -1,7 +1,7 @@
 # Loongson-2k500
 龙芯2k500开发板驱动开发实例
 
-![龙芯技术交流社区](https://bbs.elecfans.com/group_1650)
+[龙芯技术交流社区](https://bbs.elecfans.com/group_1650)
 
 1.aht20  温湿度
 
