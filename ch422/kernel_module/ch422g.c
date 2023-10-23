@@ -155,7 +155,7 @@ static ssize_t ch422g_write(struct file *filp, const char __user *buf, size_t cn
 {
 	int retvalue;
 	unsigned char databuf[5];
-	struct dac_dev *dev = filp->private_data;
+	struct ch422g_dev *dev = filp->private_data;
         unsigned char cmd,ch1,ch2,ch3,ch4;
 
 	retvalue = copy_from_user(databuf, buf, cnt);
