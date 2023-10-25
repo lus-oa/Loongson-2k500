@@ -10,6 +10,8 @@
   * 程序编译
 * [开发实例](#开发实例)
 
+***
+
 ## 环境搭建
 
 ### 1. 环境工具
@@ -66,11 +68,41 @@ source ~/.bashrc
 
 ### 3. 程序编译
 
-通常使用Makefile进行编译，对于内核模块代码和用户空间代码的Makefile文件不同，将分别进行介绍
+通常使用Makefile进行编译，对于内核模块代码和用户空间代码的Makefile文件不同，本节将分别进行介绍。
 
-**内核模块代码编译**
+**1) 内核模块Makefile**
 
-**用户空间代码编译**
+内核模块代码编译使用的Makefile文件格式如下：
+
+```
+obj-m :=module_name.o
+
+KDIR :=/root/loongarch/linux-5.10-2k500-cbd-src
+
+all:
+	make -C $(KDIR) M=$(PWD) modules
+clean:
+	rm -f *.ko *.o *.mod.o *.mod.c *.symvers
+```
+
+obj-m为编译内核模块代码生成的.o文件，需要本目录下存在module_name.c源文件，需要根据源文件名修改obj-m。  
+KDIR为Linux内核源码目录，需要改为第一步中解压得到的linux-5.10-2k500-cbd-src目录所在位置。  
+
+**2) 用户空间Makefile**
+
+用户空间编译较为简单，无需配置内核目录，具体Makefile文件内容如下：
+
+```
+all: test 
+clean: 
+	rm -rf test_ch422g        
+test: 
+	loongarch64-linux-gnu-gcc -O2 test.c -o test
+```
+
+如使用多线程编程，可添加编译选项`-lpthread`，其余编译选项请参考交叉编译链相关文档。
+
+***
 
 ## 开发实例
 
