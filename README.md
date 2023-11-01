@@ -31,7 +31,7 @@
 在进行内核空间和用户空间的程序编译前，需要配置交叉编译链的环境变量，配置内容如下，有两种配置方式，可自行选择
 
 ```
-CC_PREFIX=/从根目录到交叉编译链目录的绝对路径/loongarch64-linux-gnu-gcc8-host-x86_64
+CC_PREFIX=/从根目录到交叉编译链目录的绝对路径/toolchain-loongarch64-linux-gnu-gcc8-host-x86_64-2022-07-18
 export PATH=$CC_PREFIX/bin:$PATH
 export LD_LIBRARY_PATH=$CC_PREFIX/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$CC_PREFIX/loongarch64-linux-gnu/lib64:$LD_LIBRARY_PATH
