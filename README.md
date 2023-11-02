@@ -20,7 +20,7 @@
 
 `Linux内核` linux-5.10-2k500-cbd-src
 
-`交叉编译链` loongarch64-linux-gnu-gcc8-host-x86_64
+`交叉编译链` loongarch64-linux-gnu-gcc8-host-x86_64-2022-07-18
 
 请在[龙芯2K500开发板技术资料](https://bbs.elecfans.com/jishu_2310652_1_1.html)中获取工具文件及数据文档。
 
