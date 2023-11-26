@@ -1,1 +1,0 @@
-cmd_/root/loongarch/drv_src/ch422g/Module.symvers := sed 's/ko$$/o/' /root/loongarch/drv_src/ch422g/modules.order | scripts/mod/modpost -m    -o /root/loongarch/drv_src/ch422g/Module.symvers -e    -T -
