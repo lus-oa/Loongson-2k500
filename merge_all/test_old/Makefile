@@ -4,6 +4,7 @@ normal_target +=test_beep.o
 normal_target +=test_stk8ba.o
 normal_target +=test_motor.o
 normal_target +=test_rc522.o
+normal_target +=test_aip1944.o
 thread_target +=test_ch422g.o
 target +=$(normal_target)
 target +=$(thread_target)
