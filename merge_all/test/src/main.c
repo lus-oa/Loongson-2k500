@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 	open_aht20();
 	open_beep();
 	open_motor();
-	// open_aip1944();
-	// display_sdu();
+	open_aip1944();
+	display_sdu();
 #if 0	//太吵了
 	beep_on();
 	msleep(200);
@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 		printf("温度：%.1f, 湿度：%.1f\n", tem/10.0, hum/10.0);
 		msleep(500);
 	}
+	display_clear();
 	close_aip1944();
 	close_stk8ba();
 	close_aht20();
