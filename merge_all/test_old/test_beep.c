@@ -7,8 +7,10 @@
 #include <string.h>
 #include <pthread.h>
 #include <sys/ioctl.h>
-#include "../beep.h"
 
+#define BEEP_MAGIC	'b'
+#define BEEP_OFF 	_IO(BEEP_MAGIC, 1)	/* 关蜂鸣器 */
+#define BEEP_ON 	_IO(BEEP_MAGIC, 2)	/* 开蜂鸣器 */
 void beep_discont(int fd, int count, unsigned long ms);
 void beep_on(int fd);
 void beep_off(int fd);
