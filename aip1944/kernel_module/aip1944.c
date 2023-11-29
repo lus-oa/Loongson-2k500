@@ -68,42 +68,43 @@ static ssize_t aip_write(struct file *filp, const char __user *buf, size_t cnt, 
 	}
 
         display_arr(databuf);
+        return cnt;
 }
 
-static long aip_ioctl(struct file *file, unsigned int cmd, unsigned long arg) 
-{
-       switch(cmd) {
-           case CMD_qian:
-                display_arr(qian);
-                break;
-           case CMD_wei:
-                display_arr(wei);
-                break;
-           case CMD_zhi:
-                display_arr(zhi);
-                break;
-           case CMD_neng:
-                display_arr(neng);
-                break;
-           case CMD_ke:
-                display_arr(ke);
-                break;
-           case CMD_ji:
-                display_arr(ji);
-                break;
-           default:
-                break;
-       };
+// static long aip_ioctl(struct file *file, unsigned int cmd, unsigned long arg) 
+// {
+//        switch(cmd) {
+//            case CMD_qian:
+//                 display_arr(shan);
+//                 break;
+//            case CMD_wei:
+//                 display_arr(wei);
+//                 break;
+//            case CMD_zhi:
+//                 display_arr(zhi);
+//                 break;
+//            case CMD_neng:
+//                 display_arr(neng);
+//                 break;
+//            case CMD_ke:
+//                 display_arr(ke);
+//                 break;
+//            case CMD_ji:
+//                 display_arr(ji);
+//                 break;
+//            default:
+//                 break;
+//        };
  
-       return 0;
-}
+//        return 0;
+// }
 
 /* 设备操作函数 */
 static struct file_operations misc_aip_fops = {
 	.owner = THIS_MODULE,
 	.open = aip_open,
         .write = aip_write,
-    .unlocked_ioctl = aip_ioctl,
+//     .unlocked_ioctl = aip_ioctl,
 };
 
 /* MISC设备结构体 */
