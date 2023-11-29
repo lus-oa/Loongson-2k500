@@ -4,4 +4,4 @@ export LD_LIBRARY_PATH=$CC_PREFIX/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$CC_PREFIX/loongarch64-linux-gnu/lib64:$LD_LIBRARY_PATH
 export ARCH=loongarch
 export CROSS_COMPILE=loongarch64-linux-gnu-
-export MY_KDIR=/home/$(whoami)/loongarch/kernel
+export MY_KDIR=/home/$(whoami)/loongarch/kernel-jr

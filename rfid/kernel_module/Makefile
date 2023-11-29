@@ -3,7 +3,7 @@ RFID-RC522-objs:=rc522.o rc522_api.o
 
 #EXTRA_CFLAGS = 
 
-KDIR :=/root/loongarch/linux-5.10-2k500-cbd-src
+KDIR :=${MY_KDIR}
 
 all:
 	make -C $(KDIR) M=$(PWD) modules

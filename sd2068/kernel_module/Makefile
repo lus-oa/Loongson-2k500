@@ -1,6 +1,6 @@
 obj-m :=sd2068_i2c.o
 
-KDIR :=/root/loongarch/linux-5.10-2k500-cbd-src
+KDIR :=${MY_KDIR}
 
 all:
 	make -C $(KDIR) M=$(PWD) modules
