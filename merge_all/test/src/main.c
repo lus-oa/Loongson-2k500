@@ -18,6 +18,9 @@
 
 #include "aht20.h"
 #include "stk8ba.h"
+#include "motor.h"
+#include "beep.h"
+#include "aip1944.h"
 
 #define msleep(ms)	usleep(1000 * (ms))
 
@@ -29,6 +32,8 @@ int main(int argc, char *argv[])
 	open_aht20();
 	open_beep();
 	open_motor();
+	// open_aip1944();
+	// display_sdu();
 #if 0	//太吵了
 	beep_on();
 	msleep(200);
@@ -49,6 +54,7 @@ int main(int argc, char *argv[])
 		printf("温度：%.1f, 湿度：%.1f\n", tem/10.0, hum/10.0);
 		msleep(500);
 	}
+	close_aip1944();
 	close_stk8ba();
 	close_aht20();
 	close_beep();
