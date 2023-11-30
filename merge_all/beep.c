@@ -7,12 +7,12 @@
 #include <linux/errno.h>
 #include <linux/gpio.h>
 #include <linux/cdev.h>
+#include <asm/io.h>
 #include <linux/device.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_gpio.h>
 #include <asm/uaccess.h>
-#include <asm/io.h>
 
 #define BEEP_CNT	1		/* 设备号个数 */
 #define BEEP_NAME	"beep"		/* 名字 */
