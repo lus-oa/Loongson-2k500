@@ -32,12 +32,13 @@ struct ch422g_struct ch422g_dev;
 
 static void CH422_SendCmd(struct ch422g_struct *dev, unsigned short cmd)
 {
-	get_i2c_lock();
+	//因为ch422g使用单独的GPIO，可以不用加锁
+	//get_i2c_lock();
 	I2c_Start(&dev->pins);    // 启动总线
 	I2c_WrByte(&dev->pins, (unsigned char)(cmd>>8));
 	I2c_WrByte(&dev->pins, (unsigned char)cmd);    // 发送数据
 	I2c_Stop(&dev->pins);    // 结束总线
-	free_i2c_lock();
+	//free_i2c_lock();
 }
 
 static int ch422g_open(struct inode *inode, struct file *filp)
