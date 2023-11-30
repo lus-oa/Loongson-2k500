@@ -19,13 +19,17 @@
 #include <linux/gpio.h>
 #include "rc522_api.h"
 
+#define RC522_PASSWD_SIZE	6
+#define RC522_ID_SIZE		4
+#define RC522_BLOCK_SIZE	16
+
 #define RC522_MAGIC	'r'
-#define CHANGE_PASSWD	_IO(RC522_MAGIC, 1)
-#define CHANGE_BLOCK	_IO(RC522_MAGIC, 2)
+#define CHANGE_PASSWD	_IOW(RC522_MAGIC, 1, unsigned char [RC522_PASSWD_SIZE])
+#define CHANGE_BLOCK	_IOW(RC522_MAGIC, 2, unsigned char)
 #define READ_CARD	_IO(RC522_MAGIC, 3)  
 #define WRITE_CARD	_IO(RC522_MAGIC, 4)
 #define CHANGE_KEY	_IO(RC522_MAGIC, 5)
-#define GET_ID		_IO(RC522_MAGIC, 6)
+#define GET_ID		_IOR(RC522_MAGIC, 6, char [RC522_ID_SIZE])
 
 #define GPCFG1	0x1fe104cc	//120-127
 #define GPCFG2	0x1fe104d0	//128-135
@@ -197,7 +201,7 @@ static ssize_t rc522_write (struct file *filp, const char *buf, size_t count, lo
 	operationcard =  WRITE_CARD;
 	if(rc522_loop_work(operationcard))
 		return -EFAULT;
-	return 0;
+	return count;
 }
 
 static int rc522_release(struct inode *inode,struct file *filp)

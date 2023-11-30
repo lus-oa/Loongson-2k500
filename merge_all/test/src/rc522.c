@@ -37,8 +37,7 @@ int close_rc522(void)
 	return ret;
 }
 
-
-int read_aht20_origin(unsigned char *databuf)
+int rc522_ioctl(unsigned int cmd, unsigned long arg)
 {
 	int ret;
 	if (fd < 0)
@@ -47,80 +46,74 @@ int read_aht20_origin(unsigned char *databuf)
 		return -1;
 	}
 
-	ret = read(fd, databuf, AHT20_ORI_SIZE);
-	if (ret != AHT20_ORI_SIZE || (databuf[0] & 0x68) != 0x08)
+	if (_IOC_DIR(cmd) & (_IOC_READ | _IOC_WRITE))
 	{
-		printf("数据读取失败\n");
+		ret = ioctl(fd, cmd, arg);
+	}
+	else
+	{
+		ret = ioctl(fd, cmd);
+	}
+	
+	if (ret < 0)
+	{
+		printf("智能卡操作失败\n");
 		return -1;
 	}
+
 	return 0;
 }
 
-int read_aht20(int *ret_tem, int *ret_hum)
+int rc522_getid(char *id)
 {
-	unsigned char ori[AHT20_ORI_SIZE];
-	int ret, hum, tem;
+	return rc522_ioctl(RC522_GET_ID, (unsigned long)id);
+}
 
+int rc522_change_passwd(unsigned char *passwd)
+{
+	return rc522_ioctl(RC522_CHANGE_PASSWD, (unsigned long)passwd);
+}
+
+int rc522_change_block(unsigned char block)
+{
+	return rc522_ioctl(RC522_CHANGE_BLOCK, block);
+}
+
+int rc522_read(char *readbuf)
+{
+	int ret;
 	if (fd < 0)
 	{
 		printf("没有打开文件:%s\n", filename);
-		return -1;
+		return 0;
 	}
 	
-	if (read_aht20_origin(ori) < 0)
+	ret = read(fd, readbuf, RC522_BLOCK_SIZE);
+	if (ret < RC522_BLOCK_SIZE)
 	{
-		return -1;
+		printf("读取块失败\n");
+		return 0;
 	}
-
-	aht20_encode(ori, ret_tem, ret_hum);
 	
-	return 0;
+	return ret;
 }
 
-int main(int argc, char** argv) 
-{ 
-	int rc522_fd; 
-	int i, read_num, write_num; 
-	char r[256];
-	char a[16]; 
-	rc522_fd = open("/dev/rfid_dev", O_RDWR); 
-	printf("test: rc522_fd=%d\n", rc522_fd); 
-	if(rc522_fd == -1) 
-	{ 
-		printf("test: Error Opening rc522\n"); 
-		return(-1); 
-	} 
-	printf("test: wait begin\n"); 
-	sleep(1); //wait 
-	printf("test: wait done\n"); 
-
-	ioctl(rc522_fd, GET_ID, &(a[0]));//参数3：选第0块 */
-	printf("%d%d%d%d", a[0],a[1],a[2],a[3]); 
-	while (1)
-	{ 
-		read_num = read(rc522_fd, r, 0); 
-		printf("read_num=%d\n", read_num); 
-		for (i = 0; i < read_num; i++)
-		{
-			printf("%x ", r[i]);
-		}
-		printf("\n");
-		if(read_num > 0){ 
-			write_num = write(rc522_fd, "\1\1\1", 3);
-			printf("write_num=%d\n", write_num); 
-			
-			read_num = read(rc522_fd, r, 0); 
-			printf("read again read_num=%d\n", read_num); 
-			for (i = 0; i < read_num; i++)
-			{
-				printf("%x ", r[i]);
-			}
-			printf("\n");
-			break;
-		} 
-		sleep(1); 
+int rc522_write(char *writebuf, size_t cnt)
+{
+	int ret;
+	if (fd < 0)
+	{
+		printf("没有打开文件:%s\n", filename);
+		return 0;
 	}
-	close(rc522_fd);
-	return 0; 
-} 
+	
+	ret = write(fd, writebuf, cnt);
+	if (ret < cnt)
+	{
+		printf("写块失败\n");
+		return 0;
+	}
+	
+	return ret;
+}
 

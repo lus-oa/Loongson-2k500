@@ -8,8 +8,8 @@ objs +=beep.o
 objs +=motor.o
 objs +=stk8ba.o
 objs +=aip1944.o
-#objs +=rc522.o
-#objs +=ch422g.o
+objs +=rc522.o
+objs +=ch422g.o
 
 opath =$(patsubst %,$(OBJ)/%,$(objs))
 target =app

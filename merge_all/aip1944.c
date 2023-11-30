@@ -27,7 +27,7 @@
 #define CMD_ji   _IO(MAGIC_NUMBER    ,6)
 
 #define AIP_NAME		"aip"	/* 名字 	*/
-#define AIP_MINOR		148			/* 子设备号 */
+#define AIP_MINOR		166			/* 子设备号 */
 #define DELAY_TIME      10
 #define GPIO5548ADDR 0x1fe104a8
 #define GPIO119112  0x1fe104c8

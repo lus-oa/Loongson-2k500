@@ -24,7 +24,8 @@ int open_beep(void)
 
 int close_beep(void)
 {
-	int ret;	
+	int ret;
+	beep_off();
 	ret = close(fd);
 	if (ret < 0)
 	{
