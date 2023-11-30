@@ -40,7 +40,7 @@ int close_ch422g(void)
 	return ret;
 }
 
-static void __ch422g_write(void)
+void ch422g_flush(void)
 {
 	if (fd < 0)
 	{
@@ -54,7 +54,7 @@ static void __ch422g_write(void)
 	}
 }
 
-static void __ch422g_set_char(int idx, char ch)
+void ch422g_set_char(int idx, char ch)
 {
 	if (ch <= '9' && ch >= '0')
 	{
@@ -78,40 +78,62 @@ static void __ch422g_set_char(int idx, char ch)
 	}
 }
 
-void ch422g_set_char(int idx, char ch)
+void ch422g_set_char_flush(int idx, char ch)
 {
-	__ch422g_set_char(idx, ch);
-	__ch422g_write();
+	ch422g_set_char(idx, ch);
+	ch422g_flush();
+}
+
+void ch422g_set_num(int idx, int num)
+{
+	tubes[idx] = BCD_decode_tab[num % 10];
+}
+
+void ch422g_set_num_flush(int idx, int num)
+{
+	ch422g_set_num(idx, num);
+	ch422g_flush();
 }
 
 void ch422g_set_tube(int idx, unsigned char ch)
 {
 	tubes[idx] = ch;
-	__ch422g_write();
 }
 
-void ch422g_set_char_all(char *chs)
+void ch422g_set_tube_flush(int idx, unsigned char ch)
 {
-	int i;
-	for (i = 1; i <= 4; i++)
-	{
-		__ch422g_set_char(i, chs[i]);
-	}
-	__ch422g_write();
+	ch422g_set_tube(idx, ch);
+	ch422g_flush();
 }
 
-void ch422g_set_tube_all(unsigned char *chs)
+void ch422g_set_mask(int idx, unsigned char mask)
 {
-	int i;
-	for (i = 1; i <= 4; i++)
-	{
-		tubes[i] = chs[i];
-	}
-	__ch422g_write();
+	tubes[idx] |= mask;
+}
+
+void ch422g_set_mask_flush(int idx, unsigned char mask)
+{
+	ch422g_set_mask(idx, mask);
+	ch422g_flush();
+}
+
+void ch422g_clear_mask(int idx, unsigned char mask)
+{
+	tubes[idx] &= ~mask;
+}
+
+void ch422g_clear_mask_flush(int idx, unsigned char mask)
+{
+	ch422g_clear_mask(idx, mask);
+	ch422g_flush();
 }
 
 void ch422g_reset(void)
 {
-	ch422g_set_char_all(" \0\0\0\0");
+	ch422g_set_char(1, ' ');
+	ch422g_set_char(2, ' ');
+	ch422g_set_char(3, ' ');
+	ch422g_set_char(4, ' ');
+	ch422g_flush();
 }
 

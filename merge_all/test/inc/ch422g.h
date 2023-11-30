@@ -12,10 +12,17 @@
 
 extern int open_ch422g(void);
 extern int close_ch422g(void);
+extern void ch422g_flush(void);
 extern void ch422g_set_char(int idx, char ch);
+extern void ch422g_set_char_flush(int idx, char ch);
+extern void ch422g_set_num(int idx, int num);
+extern void ch422g_set_num_flush(int idx, int num);
 extern void ch422g_set_tube(int idx, unsigned char ch);
-extern void ch422g_set_char_all(char *chs);
-extern void ch422g_set_tube_all(unsigned char *chs);
+extern void ch422g_set_tube_flush(int idx, unsigned char ch);
+extern void ch422g_set_mask(int idx, unsigned char mask);
+extern void ch422g_set_mask_flush(int idx, unsigned char mask);
+extern void ch422g_clear_mask(int idx, unsigned char mask);
+extern void ch422g_clear_mask_flush(int idx, unsigned char mask);
 extern void ch422g_reset(void);
 extern const unsigned char BCD_decode_tab[];
 
