@@ -33,7 +33,7 @@ static struct aht20_struct aht20_dev;
 void AHT20_SendCmd( struct aht20_struct *dev, unsigned char *cmd_buf, size_t cnt )
 {
 	int i;
-	get_i2c_lock();
+	get_i2c_lock(&dev->pins);
    	I2c_Start(&dev->pins);    // 启动总线
 	I2c_WrByte(&dev->pins, dev->write_addr);
 	for (i = 0; i < cnt; i++)
@@ -41,13 +41,13 @@ void AHT20_SendCmd( struct aht20_struct *dev, unsigned char *cmd_buf, size_t cnt
 		I2c_WrByte(&dev->pins, (unsigned char)(cmd_buf[i]));
 	} 
 	I2c_Stop(&dev->pins);    // 结束总线  
-	free_i2c_lock();
+	free_i2c_lock(&dev->pins);
 }
 
 void AHT20_Recv( struct aht20_struct *dev, unsigned char *buf, size_t cnt )
 {
 	int i;
-	get_i2c_lock();
+	get_i2c_lock(&dev->pins);
 	I2c_Start(&dev->pins);
 	I2c_WrByte(&dev->pins, dev->read_addr);
 	for (i = 0; i < cnt; i++)
@@ -55,7 +55,7 @@ void AHT20_Recv( struct aht20_struct *dev, unsigned char *buf, size_t cnt )
 		buf[i] = I2c_RdByte(&dev->pins, cnt - i - 1);
 	}
 	I2c_Stop(&dev->pins);
-	free_i2c_lock();
+	free_i2c_lock(&dev->pins);
 }
 
 static int aht20_open(struct inode *inode, struct file *filp)

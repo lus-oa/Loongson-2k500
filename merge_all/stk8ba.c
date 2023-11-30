@@ -41,7 +41,7 @@ struct stk8ba_struct stk8ba_dev;
 
 void STK8BA_Write_Reg(struct stk8ba_struct *dev, unsigned char reg_addr, unsigned char new_value)
 {
-	get_i2c_lock();
+	get_i2c_lock(&dev->pins);
 
    	I2c_Start(&dev->pins);    // 启动总线
 	I2c_WrByte(&dev->pins, dev->write_addr);
@@ -49,14 +49,14 @@ void STK8BA_Write_Reg(struct stk8ba_struct *dev, unsigned char reg_addr, unsigne
 	I2c_WrByte(&dev->pins, new_value);
 	I2c_Stop(&dev->pins);    // 结束总线  
 
-	free_i2c_lock();
+	free_i2c_lock(&dev->pins);
 }
 
 static unsigned char STK8BA_Read_Reg(struct stk8ba_struct *dev, unsigned char reg)
 {
 	unsigned char val;
 
-	get_i2c_lock();
+	get_i2c_lock(&dev->pins);
 
 	I2c_Start(&dev->pins);
 	I2c_WrByte(&dev->pins, dev->write_addr);
@@ -68,7 +68,7 @@ static unsigned char STK8BA_Read_Reg(struct stk8ba_struct *dev, unsigned char re
 	val = I2c_RdByte(&dev->pins, NACK);
 	I2c_Stop(&dev->pins);
 
-	free_i2c_lock();
+	free_i2c_lock(&dev->pins);
 	
 	return val;
 }

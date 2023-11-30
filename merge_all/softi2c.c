@@ -67,9 +67,39 @@ static void __exit softi2c_exit(void)
 
 module_init(softi2c_init);
 module_exit(softi2c_exit);
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("yangjinrun");
+MODULE_ALIAS("SoftI2c_API");
 
-DEFINE_SPINLOCK(softi2c_lock);
-EXPORT_SYMBOL(softi2c_lock);
+DEFINE_SPINLOCK(softi2c3_lock);
+
+void get_i2c_lock(I2c_Pins *pins)
+{
+	if (pins->sda == SDA3_GPIO && pins->scl == SCL3_GPIO)
+	{
+		spin_lock(&softi2c3_lock);
+	}
+	else
+	{
+		printk("i2c spinlock for %d,%d doesn't exist\n"\
+			, pins->sda, pins->scl);
+	}
+}
+EXPORT_SYMBOL(get_i2c_lock);
+
+void free_i2c_lock(I2c_Pins *pins)
+{
+	if (pins->sda == SDA3_GPIO && pins->scl == SCL3_GPIO)
+	{
+		spin_unlock(&softi2c3_lock);
+	}
+	else
+	{
+		printk("i2c spinlock for %d,%d doesn't exist\n"\
+			, pins->sda, pins->scl);
+	}
+}
+EXPORT_SYMBOL(free_i2c_lock);
 
 static inline void SDA_D_OUT(I2c_Pins *pins)
 {
@@ -208,8 +238,4 @@ unsigned char I2c_RdByte( I2c_Pins *pins, int ack )
 	return ret;
 }
 EXPORT_SYMBOL(I2c_RdByte);
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("yangjinrun");
-MODULE_ALIAS("SoftI2c_API");
 
