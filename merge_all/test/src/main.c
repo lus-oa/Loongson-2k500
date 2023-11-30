@@ -37,7 +37,11 @@ int main(int argc, char *argv[])
 
 	system_init();
 
-	display_sdu();
+	aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_SLIDE_MODE);
+	aip1944_display_clear();
+	aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_ROLL_MODE);
+	aip1944_display_clear();
+
 #if 0	//太吵了
 	beep_on();
 	msleep(200);
@@ -83,7 +87,6 @@ int main(int argc, char *argv[])
 		msleep(500);
 	}
 #endif
-	display_clear();
 	
 	system_exit();
 	return 0;
