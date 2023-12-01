@@ -76,12 +76,6 @@ int read_aht20(int *ret_tem, int *ret_hum)
 {
 	unsigned char ori[AHT20_ORI_SIZE];
 	int ret, hum, tem;
-
-	if (fd < 0)
-	{
-		printf("没有打开文件:%s\n", filename);
-		return -1;
-	}
 	
 	if (read_aht20_origin(ori) < 0)
 	{

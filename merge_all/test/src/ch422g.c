@@ -130,10 +130,10 @@ void ch422g_clear_mask_flush(int idx, unsigned char mask)
 
 void ch422g_reset(void)
 {
-	ch422g_set_char(1, ' ');
-	ch422g_set_char(2, ' ');
-	ch422g_set_char(3, ' ');
-	ch422g_set_char(4, ' ');
+	ch422g_set_tube(1, 0x00);
+	ch422g_set_tube(2, 0x00);
+	ch422g_set_tube(3, 0x00);
+	ch422g_set_tube(4, 0x00);
 	ch422g_flush();
 }
 
