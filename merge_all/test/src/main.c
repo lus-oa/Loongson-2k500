@@ -23,6 +23,7 @@
 #include "ch422g.h"
 #include "rc522.h"
 #include "aip1944.h"
+#include "key16.h"
 
 #define msleep(ms)	usleep(1000 * (ms))
 
@@ -41,6 +42,12 @@ int main(int argc, char *argv[])
 	aip1944_display_clear();
 	aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_ROLL_MODE);
 	aip1944_display_clear();
+	// 从左到右递增1，从上到下递增4，bit代表当前按的位，暂时不支持同行一起按
+	uint16_t key = key_scan();
+	for (int i = 0; i < 16; i++) {
+		printf("%d", (key >> i) & 1);
+	}
+	printf("\n");
 
 #if 0	//太吵了
 	beep_on();
@@ -101,6 +108,7 @@ void system_init(void)
 	open_aip1944();
 	open_rc522();
 	open_ch422g();
+	open_key16();
 }
 void system_exit(void)
 {
@@ -112,5 +120,6 @@ void system_exit(void)
 	close_aip1944();
 	close_rc522();
 	close_ch422g();
+	close_key16();
 }
 
