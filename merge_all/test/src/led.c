@@ -24,7 +24,8 @@ int open_led(void)
 
 int close_led(void)
 {
-	int ret;	
+	int ret;
+	led_control("000");
 	ret = close(fd);
 	if (ret < 0)
 	{
@@ -85,6 +86,17 @@ void led_off(int idx)
 		return;
 	}
 	databuf[idx] = 0;
+	led_flush();
+}
+
+void led_neg(int idx)
+{
+	if (idx < 0 || idx >= LED_COUNT)
+	{
+		printf("当前仅支持LED0-LED%d！\n", LED_COUNT - 1);
+		return;
+	}
+	databuf[idx] = databuf[idx] ? 0 : 1;
 	led_flush();
 }
 

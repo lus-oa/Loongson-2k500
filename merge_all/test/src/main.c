@@ -28,105 +28,71 @@
 
 #define msleep(ms)	usleep(1000 * (ms))
 
+pthread_t logo_pth;
+int xyz[3], tem, hum;
+
+typedef enum key_op {
+	OP_LED1,
+	OP_LED2,
+	OP_LED3,
+	OP_SHOW_TEM,
+	OP_SHOW_HUM,
+	OP_ERROR
+} System_OP_Type;
+
+enum {
+	CH422G_NOTHTING,
+	CH422G_TEM,
+	CH422G_HUM
+} ch422g_mode;
+
 void system_init(void);
 void system_exit(void);
+System_OP_Type key_decode(uint16_t key);
+void key_event(uint16_t key);
+void ch422g_showdata(void);
+
+void *logo_display(void *arg)
+{
+	//收到cancel信号，取消此线程
+        pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+        //立即取消此线程
+        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	while (1)
+	{
+		aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_SLIDE_MODE);
+		aip1944_display_clear();
+		aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_ROLL_MODE);
+		aip1944_display_clear();
+	}
+}
 
 int main(int argc, char *argv[])
 {
-	int xyz[3];
-	int i, tem, hum;
+	int i;
 	char id[RC522_ID_SIZE], rcbuf[RC522_BLOCK_SIZE];
 	unsigned char aipbuf[32] = { 0 };
+	uint16_t key;
 
 	system_init();
 
-#if 1
-	aipbuf[0] = 0xF0;
-	aipbuf[1] = 0x55;
-	aip1944_set_data(aipbuf);
-	sleep(2);
-#endif
-
-#if 1
-	aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_SLIDE_MODE);
-	aip1944_display_clear();
-	aip1944_display(aip1944_demo,sizeof(aip1944_demo),AIP1944_ROLL_MODE);
-	aip1944_display_clear();
-#endif
-#if 0
-	// 从左到右递增1，从上到下递增4，bit代表当前按的位，暂时不支持同行一起按
-	uint16_t key = key_scan();
-	for (int i = 0; i < 16; i++) {
-		printf("%d", (key >> i) & 1);
-	}
-	printf("\n");
-#endif
-#if 0	//太吵了
-	beep_on();
-	msleep(200);
-	beep_off();
-	motor_standby();
-	msleep(500);
-	motor_forward();
-	msleep(500);
-	motor_backward();
-	msleep(500);
-	motor_brake();
-#endif
-#if 0
-	rc522_getid(id);
-	printf("%d%d%d%d\n", id[0], id[1], id[2], id[3]);
 	while (1)
 	{
-		if (rc522_read(rcbuf) == sizeof(rcbuf))
+		key = key_scan();
+		if (key)
 		{
-			for (i = 0; i < sizeof(rcbuf); i++)
-				printf("%x ", rcbuf[i]);
-			printf("\n");
-			rc522_write("dfs134", 6);
-			rc522_read(rcbuf);
-			for (i = 0; i < sizeof(rcbuf); i++)
-				printf("%x ", rcbuf[i]);
-			printf("\n");
-			break;
+			printf("%x\n", key);
+			sleep(1);
 		}
-		sleep(1);
-	}
-#endif
-#if 0
-	while (1)
-	{
-		uint16_t key = key_scan();
 		if (key & KEY16(15))
 			break;
-		if (key & KEY16(0))
-			led_on(0);
-		if (key & KEY16(1))
-			led_on(1);
-		if (key & KEY16(2))
-			led_on(2);
-		if (key & KEY16(3))
-			led_control("111");
-		if (key & KEY16(4))
-			led_control("000");
-	}
-#endif
-
-#if 1
-	for (i = 0; i < 10; i++)
-	{
-		read_stk8ba_xyz(xyz);
-		printf("x:%d, y:%d, z:%d\n", xyz[0], xyz[1], xyz[2]);
+		key_event(key);
 		read_aht20(&tem, &hum);
-		printf("温度：%.1f, 湿度：%.1f\n", tem/10.0, hum/10.0);
-		ch422g_set_num(2, tem / 100);
-		ch422g_set_num(3, tem / 10);
-		ch422g_set_mask(3, CH422G_PT);
-		ch422g_set_num(4, tem);
-		ch422g_flush();
-		msleep(500);
+		//printf("温度：%.1f, 湿度：%.1f\n", tem/10.0, hum/10.0);
+		read_stk8ba_xyz(xyz);
+		//printf("x:%d, y:%d, z:%d\n", xyz[0], xyz[1], xyz[2]);
+		ch422g_showdata();
 	}
-#endif
 	
 	system_exit();
 	return 0;
@@ -134,6 +100,7 @@ int main(int argc, char *argv[])
 
 void system_init(void)
 {
+	int ret = 0;
 	open_stk8ba();
 	open_aht20();
 	open_beep();
@@ -141,11 +108,23 @@ void system_init(void)
 	open_aip1944();
 	open_rc522();
 	open_ch422g();
-	//open_key16();
+	open_key16();
+	open_led();
+	
+	ret = pthread_create(&logo_pth, NULL, logo_display, NULL);
+	if (ret)
+	{
+		printf("logo初始化失败！\n");
+		return;
+	}
+
+	printf("系统初始化成功\n");
 }
 void system_exit(void)
 {
-	
+	pthread_cancel(logo_pth);
+	pthread_join(logo_pth, NULL);
+
 	close_stk8ba();
 	close_aht20();
 	close_beep();
@@ -153,6 +132,72 @@ void system_exit(void)
 	close_aip1944();
 	close_rc522();
 	close_ch422g();
-	//close_key16();
+	close_key16();
+	close_led();
+	
+	printf("系统退出成功\n");
+}
+
+System_OP_Type key_decode(uint16_t key)
+{
+	if (key & KEY16(0))
+		return OP_LED1;
+	if (key & KEY16(1))
+		return OP_LED2;
+	if (key & KEY16(2))
+		return OP_LED3;
+	if (key & KEY16(3))
+		return OP_SHOW_TEM;
+	if (key & KEY16(4))
+		return OP_SHOW_HUM;
+	return OP_ERROR;
+}
+
+void key_event(uint16_t key)
+{
+	System_OP_Type op = key_decode(key);
+	switch (op)
+	{
+	case OP_LED1:
+		led_neg(0);
+		break;
+	case OP_LED2:
+		led_neg(1);
+		break;
+	case OP_LED3:
+		led_neg(2);
+		break;
+	case OP_SHOW_TEM:
+		ch422g_mode = CH422G_TEM;
+		break;
+	case OP_SHOW_HUM:
+		ch422g_mode = CH422G_HUM;
+		break;
+	case OP_ERROR:
+		break;
+	default:
+		break;
+	}
+}
+
+void ch422g_showdata(void)
+{
+	switch (ch422g_mode)
+	{
+	case CH422G_TEM:
+		ch422g_set_num(2, tem / 100);
+		ch422g_set_num(3, tem / 10);
+		ch422g_set_mask(3, CH422G_PT);
+		ch422g_set_num(4, tem);
+		ch422g_flush();
+		break;
+	case CH422G_HUM:
+		ch422g_set_num(2, hum / 100);
+		ch422g_set_num(3, hum / 10);
+		ch422g_set_mask(3, CH422G_PT);
+		ch422g_set_num(4, hum);
+		ch422g_flush();
+		break;
+	}
 }
 

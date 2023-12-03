@@ -1,5 +1,5 @@
-#ifndef __AHT20_H__
-#define __AHT20_H__
+#ifndef __LED_H__
+#define __LED_H__
 
 #define LED_COUNT	3
 
@@ -8,6 +8,7 @@ extern int close_led(void);
 extern void led_control(unsigned char *buf);
 extern void led_on(int idx);
 extern void led_off(int idx);
+extern void led_neg(int idx);
 
 #endif
 

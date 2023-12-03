@@ -18,9 +18,9 @@ target =app
 
 all: $(target)
 $(target):$(opath)
-	$(CC) -O2 $^ -o $@ $(INC)
+	$(CC) -O2 -lpthread $^ -o $@ $(INC)
 $(opath):$(OBJ)/%.o:$(SRC)/%.c
-	$(CC) -O2 -lpthread $^ -c -o $@ $(INC)
+	$(CC) -O2 $^ -c -o $@ $(INC)
 
 clean:
 	rm $(target) $(opath)

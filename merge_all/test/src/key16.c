@@ -11,6 +11,7 @@
 static char filename[] = "/dev/key";
 static int fd = -1;
 int keyvalue[8];
+int keyvalue_tmp[8];
 
 int open_key16(void)
 {
@@ -40,7 +41,7 @@ uint16_t key_scan(void)
 		printf("没有打开文件：%s\n", filename);
 		return (uint16_t)-1;
 	}
-	int ret;
+	int ret, i, j, flag = 0;
 	uint16_t key = 0x00;
 	unsigned char databuf[4];
 	memset(databuf, 0x1, sizeof(databuf));
@@ -51,35 +52,40 @@ uint16_t key_scan(void)
 		close(fd);
 		return (uint16_t)-1;
 	}
-	while (1) {
-		read(fd, keyvalue, sizeof(keyvalue));
-		int flag = 0;
-		for (int i = 0; i < 4; i++) {
-			if (keyvalue[i] == 1) {
-				flag = 1;
-			}
+
+	read(fd, keyvalue, sizeof(keyvalue));
+	for (i = 0; i < 4; i++)
+	{
+		if (keyvalue[i] == 1)
+		{
+			flag = 1;
 		}
-		if (flag)
-			break;
-		usleep(1000 * 20);
 	}
-	for (int i = 0; i < 4; i++) {
+	if (!flag)
+		return 0;
+
+	for (i = 0; i < 4; i++)
+	{
 		memset(databuf, 0x0, sizeof(databuf));
 		databuf[i] = 1;
 		ret = write(fd, databuf, sizeof(databuf));
-		if (ret < 0) {
+		if (ret < 0)
+		{
 			printf("Key Control Failed!\r\n");
 			close(fd);
 			return (uint16_t)-1;
 		}
-		usleep(1000 * 20);
 		read(fd, keyvalue, sizeof(keyvalue));
+		usleep(1000 * 20);
+		read(fd, keyvalue_tmp, sizeof(keyvalue_tmp));
+/*
 		printf("KEY0 Press, value = %#X-%#X-%#X-%#X-%#X-%#X-%#X-%#X\r\n",
 		       keyvalue[0], keyvalue[1], keyvalue[2], keyvalue[3],
 		       keyvalue[4], keyvalue[5], keyvalue[6], keyvalue[7]);
-		for (int j = 0; j < 4; j++) {
-			if (keyvalue[j]) {
-				key = key | (1 << i + j * 4);
+*/
+		for (j = 0; j < 4; j++) {
+			if (keyvalue[j] && keyvalue_tmp[j]) {
+				key |= 1 << (i + (j << 2));
 			}
 		}
 	}
