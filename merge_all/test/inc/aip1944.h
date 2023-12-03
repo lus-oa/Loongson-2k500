@@ -4,7 +4,7 @@
 #define AIP1944_SLIDE_MODE 1
 #define AIP1944_ROLL_MODE 2
 
-extern unsigned char aip1944_demo[];
+extern unsigned char aip1944_demo[384];
 
 extern int open_aip1944(void);
 extern int close_aip1944(void);
