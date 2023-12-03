@@ -7,6 +7,7 @@ obj-m += rfid.o
 rfid-objs := rc522.o rc522_api.o
 obj-m += stk8ba.o
 obj-m += aip1944.o
+obj-m += led.o
 
 
 KDIR :=$(MY_KDIR)

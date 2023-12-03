@@ -8,9 +8,11 @@ extern unsigned char aip1944_demo[384];
 
 extern int open_aip1944(void);
 extern int close_aip1944(void);
+extern void aip1944_flush(void);
+extern void aip1944_set_data(unsigned char *buf);
+extern void aip1944_set_mask(unsigned char *buf);
+extern void aip1944_clear_mask(unsigned char *buf);
 extern void aip1944_display(unsigned char *buf, int byte_cnt, int mode);
 extern void aip1944_display_clear(void);
-void _display_slide_(unsigned char *data, int byte_cnt);
-void _display_roll_(unsigned char *data, int byte_cnt);
 
 #endif
