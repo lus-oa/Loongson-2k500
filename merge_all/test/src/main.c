@@ -100,11 +100,11 @@ int main(int argc, char *argv[])
 		if (key & KEY16(15))
 			break;
 		if (key & KEY16(0))
-			led1_on();
+			led_on(0);
 		if (key & KEY16(1))
-			led2_on();
+			led_on(1);
 		if (key & KEY16(2))
-			led3_on();
+			led_on(2);
 		if (key & KEY16(3))
 			led_control("111");
 		if (key & KEY16(4))

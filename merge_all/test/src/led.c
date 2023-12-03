@@ -9,7 +9,7 @@
 
 static char filename[] = "/dev/led";
 static int fd = -1;
-static unsigned char databuf[3] = { 0, 0, 0 };
+static unsigned char databuf[LED_COUNT] = { 0 };
 
 int open_led(void)
 {
@@ -35,7 +35,7 @@ int close_led(void)
 	return ret;
 }
 
-int led_flush(void)
+static int led_flush(void)
 {
 	if (fd < 0)
 	{
@@ -53,7 +53,7 @@ int led_flush(void)
 void led_control(unsigned char *buf)
 {
 	int i;
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < LED_COUNT; i++)
 	{
 		if (buf[i] <= 1)
 			databuf[i] = buf[i];
@@ -66,39 +66,15 @@ void led_control(unsigned char *buf)
 	led_flush();
 }
 
-void led1_on(void)
+void led1_on(int idx)
 {
-	databuf[0] = 1;
+	databuf[idx] = 1;
 	led_flush();
 }
 
-void led1_off(void)
+void led1_off(int idx)
 {
-	databuf[0] = 0;
-	led_flush();
-}
-
-void led2_on(void)
-{
-	databuf[1] = 1;
-	led_flush();
-}
-
-void led2_off(void)
-{
-	databuf[1] = 0;
-	led_flush();
-}
-
-void led3_on(void)
-{
-	databuf[2] = 1;
-	led_flush();
-}
-
-void led3_off(void)
-{
-	databuf[2] = 0;
+	databuf[idx] = 0;
 	led_flush();
 }
 
