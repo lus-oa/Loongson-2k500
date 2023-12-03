@@ -66,14 +66,24 @@ void led_control(unsigned char *buf)
 	led_flush();
 }
 
-void led1_on(int idx)
+void led_on(int idx)
 {
+	if (idx < 0 || idx >= LED_COUNT)
+	{
+		printf("当前仅支持LED0-LED%d！\n", LED_COUNT - 1);
+		return;
+	}
 	databuf[idx] = 1;
 	led_flush();
 }
 
-void led1_off(int idx)
+void led_off(int idx)
 {
+	if (idx < 0 || idx >= LED_COUNT)
+	{
+		printf("当前仅支持LED0-LED%d！\n", LED_COUNT - 1);
+		return;
+	}
 	databuf[idx] = 0;
 	led_flush();
 }
