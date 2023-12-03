@@ -4,18 +4,10 @@
 #include <string.h>
 #include <fcntl.h>
 #include <pthread.h>
-#include <signal.h>
 #include <fcntl.h>
-#include <poll.h>
-#include <math.h> 
-#include <errno.h> 
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <arpa/inet.h> 
-
 #include "aht20.h"
 #include "stk8ba.h"
 #include "motor.h"
@@ -69,9 +61,6 @@ void *logo_display(void *arg)
 
 int main(int argc, char *argv[])
 {
-	int i;
-	char id[RC522_ID_SIZE], rcbuf[RC522_BLOCK_SIZE];
-	unsigned char aipbuf[32] = { 0 };
 	uint16_t key;
 
 	system_init();
@@ -120,6 +109,7 @@ void system_init(void)
 
 	printf("系统初始化成功\n");
 }
+
 void system_exit(void)
 {
 	pthread_cancel(logo_pth);
@@ -197,6 +187,8 @@ void ch422g_showdata(void)
 		ch422g_set_mask(3, CH422G_PT);
 		ch422g_set_num(4, hum);
 		ch422g_flush();
+		break;
+	default:
 		break;
 	}
 }
