@@ -7,5 +7,4 @@ extern int open_key16(void);
 extern int close_key16(void);
 extern uint16_t key_scan(void);
 
-
 #endif
