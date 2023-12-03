@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
 	system_init();
 
 #if 1
-	aip1944_display_clear();
 	aipbuf[0] = 0xF0;
 	aipbuf[1] = 0x55;
 	aip1944_set_data(aipbuf);
