@@ -82,7 +82,7 @@ static char rc522_loop_work(uint opnd)
 		t++;
 		if (t > 3)
 		{
-			pr_info("search card: no card\n");
+			//pr_info("search card: no card\n");
 			return -EFAULT;
 		}
 	}
@@ -90,7 +90,7 @@ static char rc522_loop_work(uint opnd)
 	status=PcdAnticoll(&RevBuffer[2]);
 	if(status!=MI_OK)
 	{
-		pr_info("get card nu: no number\n");
+		//pr_info("get card nu: no number\n");
 		return -EFAULT;
 	} 
 	memcpy(MLastSelectedSnr,&RevBuffer[2],4);
@@ -98,7 +98,7 @@ static char rc522_loop_work(uint opnd)
 	status=PcdSelect(MLastSelectedSnr);
 	if(status!=MI_OK)
 	{
-		pr_info("select card: no card\n");
+		//pr_info("select card: no card\n");
 		return -EFAULT;            
 	}
 	if (opnd == GET_ID) {
@@ -136,7 +136,7 @@ static char rc522_loop_work(uint opnd)
 		} else
 			pr_info("set password success\n");
 	} else if (opnd == WRITE_CARD) {//Ð´¿¨
-		pr_info("write info:%s\n", WriteData);
+		//pr_info("write info:%s\n", WriteData);
 		status=PcdAuthState(PICC_AUTHENT1A,KuaiN,PassWd,MLastSelectedSnr);
 		if(status!=MI_OK)
 		{
@@ -170,7 +170,7 @@ static ssize_t rc522_read (struct file *filp, char *buf, size_t count, loff_t *f
 	operationcard = READ_CARD;
 	if(rc522_loop_work(operationcard))
 		return 0;
-	pr_info("card info:%2.2X\n",Read_Data[0]);
+	//pr_info("card info:%2.2X\n",Read_Data[0]);
 	if (copy_to_user(buf, read_data_buff, sizeof(read_data_buff))) {
 		pr_info("copy card number to userspace err\n");
 		return 0;

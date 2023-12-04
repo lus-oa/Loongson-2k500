@@ -91,7 +91,7 @@ int rc522_read(char *readbuf)
 	ret = read(fd, readbuf, RC522_BLOCK_SIZE);
 	if (ret < RC522_BLOCK_SIZE)
 	{
-		printf("读取块失败\n");
+		//printf("读取块失败\n");
 		return 0;
 	}
 	

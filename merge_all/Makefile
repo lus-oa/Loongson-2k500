@@ -9,6 +9,7 @@ obj-m += stk8ba.o
 obj-m += aip1944.o
 obj-m += led.o
 obj-m += key.o
+obj-m += irdrv.o
 
 
 KDIR :=$(MY_KDIR)

@@ -12,6 +12,7 @@ objs +=rc522.o
 objs +=ch422g.o
 objs +=key16.o
 objs +=led.o
+objs +=ir.o
 
 opath =$(patsubst %,$(OBJ)/%,$(objs))
 target =app
