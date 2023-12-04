@@ -27,11 +27,6 @@ struct ir_info_struct {
 	pthread_mutex_t ir_lock;
 };
 
-pthread_t logo_pth, ir_pth, rc_pth;
-int logo_mode = AIP1944_SLIDE_MODE;
-int xyz[3], tem, hum;
-struct ir_info_struct ir_info;
-
 typedef enum key_op {
 	OP_LED1,
 	OP_LED2,
@@ -45,6 +40,11 @@ typedef enum key_op {
 	OP_MOTOR_BRAKE,
 	OP_ERROR
 } System_OP_Type;
+
+pthread_t logo_pth, ir_pth, rc_pth;
+int logo_mode = AIP1944_SLIDE_MODE;
+int xyz[3], tem, hum;
+struct ir_info_struct ir_info;
 
 enum {
 	CH422G_NOTHTING,
@@ -129,18 +129,12 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		key = key_scan();
-		if (key)
-		{
-			printf("%x\n", key);
-			usleep(1000 * 200);
-		}
 		if (key & KEY16(15))
 			break;
-		
+
 		key_handler(key);
 		ir_handler(&ir_event);
 		read_aht20(&tem, &hum);
-		//printf("温度：%.1f, 湿度：%.1f\n", tem/10.0, hum/10.0);
 		read_stk8ba_xyz(xyz);
 		//printf("x:%d, y:%d, z:%d\n", xyz[0], xyz[1], xyz[2]);
 		ch422g_showdata();
@@ -317,6 +311,10 @@ void ir_handler(struct input_event *ir_event)
 	{
 		ir_encode(&ir_info.ir_event, &ir_key);
 		ir_info.ir_flag = 0;
+	}
+	else
+	{
+		return;
 	}
 	pthread_mutex_unlock(&ir_info.ir_lock);
 	
