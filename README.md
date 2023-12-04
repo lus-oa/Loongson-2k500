@@ -1,7 +1,3 @@
-// Copyright (c) 2023 Shandong University
-
-// Copyright (c) 2023 Jinrun Yang, Junchi Ren
-
 # Loongson-2k500
 龙芯2k500开发板驱动开发实例
 
