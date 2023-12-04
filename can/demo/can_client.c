@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Junchi Ren, Jinrun Yang
+
 #include <linux/can.h>
 #include <linux/can/raw.h>
 #include <net/if.h>

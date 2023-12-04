@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 //gpio84===pwm0,gpio85===pwm1
 #include <linux/types.h>
 #include <linux/kernel.h>

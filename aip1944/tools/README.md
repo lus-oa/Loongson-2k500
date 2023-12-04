@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Junchi Ren, Jinrun Yang
+
 # 字符转换点阵
 
 | [单片机-LCD-LED-OLED中文点阵生成](https://www.zhetao.com/fontarray.html)

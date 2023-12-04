@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/slab.h>

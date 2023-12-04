@@ -1,4 +1,7 @@
-all: test 
+# Copyright (c) 2023 Shandong University
+# Copyright (c) 2023 Junchi Ren, Jinrun Yang
+
+all: test
 clean: 
 	rm -rf test_aip        
 test: 

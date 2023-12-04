@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Shandong University
+# Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 obj-m :=ch422g.o
 
 KDIR :=${MY_KDIR}

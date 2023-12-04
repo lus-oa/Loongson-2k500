@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 #ifndef STK8BA_H
 #define STK8BA_H
 

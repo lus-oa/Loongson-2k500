@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Junchi Ren, Jinrun Yang
+
 #ifndef AIP1944_H
 #define AIP1944_H
 

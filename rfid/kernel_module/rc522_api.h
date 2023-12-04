@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 #ifndef __rc522_h__
 #define __rc522_h__
 

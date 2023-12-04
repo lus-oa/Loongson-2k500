@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Shandong University
+# Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 obj-m :=ms1112_i2c.o
 
 KDIR :=${MY_KDIR}

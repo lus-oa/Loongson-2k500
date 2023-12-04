@@ -1,3 +1,6 @@
+// Copyright (c) 2023 Shandong University
+// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+
 # CH422 数码管
 
 本目录下包括CH422内核模块、测试代码、相关数据手册及[运行方法](#运行方法)
