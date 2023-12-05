@@ -1,5 +1,5 @@
-// Copyright (c) 2023 Shandong University
-// Copyright (c) 2023 Jinrun Yang, Junchi Ren
+# Copyright (c) 2023 Shandong University
+# Copyright (c) 2023 Jinrun Yang, Junchi Ren
 
 CC =loongarch64-linux-gnu-gcc
 INC =-I ./inc
