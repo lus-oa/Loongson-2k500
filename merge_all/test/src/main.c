@@ -317,6 +317,7 @@ void ir_handler(struct input_event *ir_event)
 	}
 	else
 	{
+		pthread_mutex_unlock(&ir_info.ir_lock);
 		return;
 	}
 	pthread_mutex_unlock(&ir_info.ir_lock);
